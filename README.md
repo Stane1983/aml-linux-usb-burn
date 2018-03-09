@@ -20,5 +20,8 @@ For more options, just issue aml-flash command.
 __soc__ paremeter can be gxl (S905, S905X and S912), axg (A113 audio SoC), txlx (TV SoC - T962), m8 (S802, S805 and S812)
 I tested this tool with sucess on S812, S905, S905X and S912.
 
+#  Note
+This tool is for x64 Linux only. File aml_image_v2_packer is 32bit but update binary (inside tools folder) is 64bit so...
+
    [amlTools]: <http://openlinux.amlogic.com:8000/download/A113/Tool/flash-tool-v4.7/flash-tool>
 
