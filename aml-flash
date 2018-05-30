@@ -25,7 +25,7 @@ TOOL_PATH="$(cd $(dirname $0); pwd)"
 show_help()
 {
     echo "Usage      : $0 --img=/path/to/aml_upgrade_package.img> --parts=<all|none|bootloader|dtb|logo|recovery|boot|system|..> [--wipe] [--reset=<y|n>] [--soc=<m8|axg|gxl|txlx>] [efuse-file=/path/to/file/location] [bootloader|dtb|logo|boot|...-file=/path/to/file/partition] [--password=/path/to/password.bin]"
-    echo "Version    : 4.7"
+    echo "Version    : 4.7.1 (modified by Stane1983)"
     echo "Parameters : --img        => Specify location path to aml_upgrade_package.img"
     echo "             --parts      => Specify which partition to burn"
     echo "             --wipe       => Destroy all partitions"
@@ -234,10 +234,12 @@ if [[ "$simu" != "1" ]]; then
          exit 1
       else
          echo "Waiting for Amlogic device to be connected..."
-         while [ ! `echo $update_return | grep -iq firmware` ]
-         do
+         while true; do
              sleep 2
              run_update_return identify 7
+             if `echo $update_return | grep -iq firmware`; then
+                break
+             fi
          done
       fi
    fi
@@ -510,6 +512,11 @@ if [[ "$parts" == "all" ]] || [[ "$parts" == "bootloader" ]] || [[ "$parts" == "
             break
          fi
          done
+
+         # If still not found, maybe DTB is stored in meson1.dtb, let's try that
+         if [[ -f $tmp_dir/$dtb_meson1_filename ]]; then
+            dtb_file=$tmp_dir/$dtb_meson1_filename
+         fi
       fi
       if [[ $soc == "m8" ]]; then
          dtb_file=$tmp_dir/$dtb_meson_filename
@@ -661,7 +668,12 @@ if [[ "$parts" == "all" ]] || [[ "$parts" == "bootloader" ]] || [[ "$parts" == "
           echo -e $GREEN"[OK]"$RESET
 
           echo -n "Writing device tree "
-          run_update_assert partition _aml_dtb "$dtb_file"
+          if [[ ! -f $tmp_dir/$dtb_meson1_filename ]]; then
+             run_update_assert partition _aml_dtb "$dtb_file"
+          else
+             run_update_assert mwrite $dtb_file mem dtb normal
+          fi
+
           echo -e $GREEN"[OK]"$RESET
 
           echo -n "Writing bootloader "
