@@ -6,7 +6,7 @@ This is just "copy" of files that can be found on Amlogic Openlinux [website][am
 Create new u-dev rule for Amlogic devices (in /etc/udev/rules.d). My file is called 70-persistent-usb-amlogic.rules
 Content of file is:
 ```
-SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+"worldcup"
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
 ```
 
 When you created your rule either reload udev rules or reboot your machine. Make sure that root folder of this repository is in your PATH variable (I simply put it inside my ~/bin folder) so I can call it from anywhere without specifying path.
