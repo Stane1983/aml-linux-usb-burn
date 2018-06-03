@@ -152,7 +152,7 @@ for opt do
         exit 0
         ;;
     --img)
-        target_img="$optval"
+        target_img="${optval/#\~/$HOME}"
         check_file $target_img
         ;;
     --parts)
@@ -165,11 +165,11 @@ for opt do
         reset="$optval"
         ;;
     --efuse-file)
-        efuse_file="$optval"
+        efuse_file="${optval/#\~/$HOME}"
         check_file $efuse_file
         ;;
     --uboot-file)
-        uboot_file="$optval"
+        uboot_file="${optval/#\~/$HOME}"
         check_file $uboot_file
         ;;
     --soc)
