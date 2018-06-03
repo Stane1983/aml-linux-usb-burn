@@ -11,6 +11,8 @@ SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idPro
 
 When you created your rule either reload udev rules or reboot your machine. Make sure that root folder of this repository is in your PATH variable (I simply put it inside my ~/bin folder) so I can call it from anywhere without specifying path.
 
+And this tool depends on `libusb` and `libusb-compat`, you must install those tools first.
+
 #  How to use
 Connect your device and put it to USB burning mode, open terminal and navigate to folder where your aml_upgrade_package.img is and issue command:
 ```
